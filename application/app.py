@@ -17,7 +17,7 @@ flight_collection = db["flights"]
 CORS(app)
 
 # GET all flights
-@app.route('/flights', methods=['GET'])
+@app.route('/api/flights', methods=['GET'])
 def getFlights():
     flights = []
     flights_collection = flight_collection.find({})
@@ -40,7 +40,7 @@ def getFlights():
     return jsonify(flights);
 
 # GET specific flight
-@app.route('/flight/<id>', methods=['GET'])
+@app.route('/api/flight/<id>', methods=['GET'])
 def getFlight(id):
   flight = []
   flights_collection = flight_collection.find({'_id': ObjectId(id)})
@@ -64,7 +64,7 @@ def getFlight(id):
 
 
 # CREATE flight
-@app.route('/flight', methods=['POST'])
+@app.route('/api/flight', methods=['POST'])
 def createFlight():
   id = flight_collection.insert_one({
     'destiny': request.json['destiny'],
@@ -82,13 +82,14 @@ def createFlight():
   return jsonify({'message': 'Flight Created'})
 
 # DELETE Flight
-@app.route('/flight/<id>', methods=['DELETE'])
+@app.route('/api/flight/<id>', methods=['DELETE'])
 def deleteFlight(id):
   flight_collection.delete_one({'_id': ObjectId(id)})
   return jsonify({'message': 'Flight Deleted'})
 
-@app.route('/flight/<id>', methods=['PUT'])
+@app.route('/api/flight/<id>', methods=['PUT'])
 def updateFlight(id):
+  print(request.json)
   flight_collection.update_one({'_id': ObjectId(id)}, {"$set": {
     'destiny': request.json['destiny'],
     'timeDeparture': request.json['timeDeparture'],
@@ -97,7 +98,6 @@ def updateFlight(id):
     'airportDeparture': request.json['airportDeparture'],
     'airportArrival': request.json['airportArrival'],
     'price': request.json['price'],
-    'carryOn': request.json['carryOn'],
     'image': request.json['image'],
     'description': request.json['description']
   }})
