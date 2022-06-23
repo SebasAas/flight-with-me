@@ -1,7 +1,7 @@
+import os
 from flask import Flask, jsonify, request
 from flask_pymongo import pymongo
 from flask_cors import CORS
-
 from bson import ObjectId
 
 # Instantiation
@@ -104,4 +104,5 @@ def updateFlight(id):
   return jsonify({'message': 'Flight Updated'})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, port=port)
